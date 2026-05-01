@@ -12,6 +12,16 @@ local TargetNames = { "AC6C_Stock_Sound", "AC6C_Boost_Sound" }
 
 local http = game:GetService("HttpService")
 
+function deleteSound(sound)
+	for i, v in pairs(workspace:GetDescendants()) do
+		if v:IsA("Sound") and v.Name == sound["name"] and tostring(v.SoundId) == tostring(sound["id"]) then
+			v:Destroy()
+		else
+			continue
+		end
+	end
+end
+
 function listen(keyList)
 	for i, v in pairs(keyList) do
 		local ac6: RemoteEvent = ac6_list[v]
@@ -28,6 +38,7 @@ function listen(keyList)
 					local sound = whitelist_sounds[args[2]]
 
 					if args[2] ~= sound["name"] or args[4]:sub(14) ~= tostring(sound["id"]:sub(14)) then
+						deleteSound(sound)
 						player:Kick(prefix .. " You were kicked from the game for using an exploit.")
 					end
 				end
